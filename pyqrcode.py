@@ -13,14 +13,7 @@
 #
 
 import math
-# There is a confusion on how PIL could be imported
-# On some imports this is from PIL imort Image
-# on others it is import Image
-# http://stackoverflow.com/questions/8863917/importerror-no-module-named-pil
-try:
-	from PIL import Image, ImageDraw
-except:
-	import Image, ImageDraw
+from PIL import Image, ImageDraw
 
 #QRCode for Python
 #
@@ -104,7 +97,7 @@ def MakeQR(data, minTypeNumber = 0, errorCorrectLevel = QRErrorCorrectLevel.Q, v
 
 			continue
 
-def MakeQRImage(data, minTypeNumber = 3, errorCorrectLevel = QRErrorCorrectLevel.Q, **ad):
+def MakeQRImage(data, minTypeNumber = 0, errorCorrectLevel = QRErrorCorrectLevel.Q, **ad):
 	"""This tries to produce a reasonable QR Code ... and returns the image"""
 
 	qr = MakeQR(data, minTypeNumber, errorCorrectLevel)
@@ -196,7 +189,7 @@ class QRCode(object):
 	def createMovieClip(self):
 		raise Exception("Method not relevant to Python port")
 
-	def make_image(self, 
+	def make_image(self,
 		mode = "RGBA", bg = "white", fg = "black", block_in_pixels = 10, border_in_blocks = 4, rounding = 0,
 		tl = True, bl = True, br = True, tr = True,
 	):
@@ -212,7 +205,7 @@ class QRCode(object):
 			draw.pieslice((0, 0, radius * 2, radius * 2), 180, 270, fill=fg)
 
 			return corner
-		 
+
 		def round_rectangle(size, radius, fg, bg, tl = True, bl = True, br = True, tr = True):
 			"""Draw a rounded rectangle"""
 
@@ -226,7 +219,9 @@ class QRCode(object):
 			if tr: rectangle.paste(corner.rotate(270), (width - radius, 0))
 
 			return rectangle
-		 
+
+		block_in_pixels = 10 #pixels per box
+		border_in_blocks = 4 #boxes as border
 		pixelsize = (self.getModuleCount() + border_in_blocks + border_in_blocks) * block_in_pixels
 
 		im = Image.new(mode, (pixelsize, pixelsize), bg)
@@ -247,8 +242,8 @@ class QRCode(object):
 
 				if round > 0:
 					rr = round_rectangle(
-						( block_in_pixels, block_in_pixels, ), 
-						rounding, 
+						( block_in_pixels, block_in_pixels, ),
+						rounding,
 						fg, bg,
 						tl = not ( self.isDark(r - 1, c) or self.isDark(r, c - 1) ) and tl,
 						bl = not ( self.isDark(r, c - 1) or self.isDark(r + 1, c) ) and bl,
