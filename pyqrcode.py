@@ -104,7 +104,7 @@ def MakeQR(data, minTypeNumber = 0, errorCorrectLevel = QRErrorCorrectLevel.Q, v
 
 			continue
 
-def MakeQRImage(data, minTypeNumber = 0, errorCorrectLevel = QRErrorCorrectLevel.Q, **ad):
+def MakeQRImage(data, minTypeNumber = 3, errorCorrectLevel = QRErrorCorrectLevel.Q, **ad):
 	"""This tries to produce a reasonable QR Code ... and returns the image"""
 
 	qr = MakeQR(data, minTypeNumber, errorCorrectLevel)
